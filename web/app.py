@@ -19,16 +19,18 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 templates = Jinja2Templates(directory=templates_path)
 
-
-# @app.get('/', response_class=HTMLResponse)
-# async def helloworld(request: Request):
-#     return templates.TemplateResponse('index.html', {'request': request})
 data = px.data.stocks()
+fig = px.line(data,['AAPL'])
+response = jsonable_encoder(fig.to_json())
+@app.get('/', response_class=HTMLResponse)
+async def helloworld(request: Request):
+     return templates.TemplateResponse('index.html', {'request': request,'data':response})
 
-@app.get('/', response_class=JSONResponse)
-async def plotly_data():
-    fig = px.line(data['AAPL'])
-    response = jsonable_encoder(fig.to_json())
-    return JSONResponse(
-        content=response
-    )
+
+# @app.get('/data', response_class=JSONResponse)
+# async def plotly_data():
+#     fig = px.line(data['AAPL'])
+#     response = jsonable_encoder(fig.to_json())
+#     return JSONResponse(
+#         content=response
+#     )
