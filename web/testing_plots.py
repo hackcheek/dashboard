@@ -1,5 +1,6 @@
 import os
 import plotly.express as px
+import json 
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -7,9 +8,11 @@ from fastapi.templating import Jinja2Templates
 from fastapi.encoders import jsonable_encoder
 from starlette.responses import HTMLResponse, JSONResponse
 from plotly.graph_objects import Figure
+from typing import Tuple, Literal
 
 
-def apple_shares() -> Figure:
+def apple_shares() -> Tuple[Figure, Literal['apple_shares']]:
+    id = 'apple_shares'
     data = px.data.stocks()
     fig = px.line(
         data, 
@@ -17,10 +20,11 @@ def apple_shares() -> Figure:
         y='AAPL', 
         title='Apple'
     )
-    return fig
+    return fig, id
 
 
-def microsoft_shares() -> Figure:
+def microsoft_shares() -> Tuple[Figure, Literal['microsoft_shares']]:
+    id = 'microsoft_shares'
     data = px.data.stocks()
     fig = px.line(
         data, 
@@ -28,20 +32,22 @@ def microsoft_shares() -> Figure:
         y='MSFT', 
         title='Microsoft'
     )
-    return fig
+    return fig, id
 
 
-def price_shares() -> Figure:
+def price_shares() -> Tuple[Figure, Literal['price_shares']]:
+    id = 'price_shares'
     data = px.data.stocks().set_index('date').iloc[-1]
     fig = px.bar(
         data, 
         title='Comparativa', 
         labels={'index': 'Acciones', 'variable': 'Dia'}
     )
-    return fig 
+    return fig , id
 
 
-def netflix_shares() -> Figure:
+def netflix_shares() -> Tuple[Figure, Literal['netflix_shares']]:
+    id = 'netflix_shares'
     data = px.data.stocks()
     fig = px.line(
         data, 
@@ -49,10 +55,11 @@ def netflix_shares() -> Figure:
         y='NFLX', 
         title='Netflix'
     )
-    return fig
+    return fig, id
 
 
-def google_shares() -> Figure:
+def google_shares() -> Tuple[Figure, Literal['google_shares']]:
+    id = 'google_shares'
     data = px.data.stocks()
     fig = px.line(
         data, 
@@ -60,7 +67,7 @@ def google_shares() -> Figure:
         y='GOOG', 
         title='Google'
     )
-    return fig
+    return fig, id
 
 
 app = FastAPI()
@@ -73,12 +80,20 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 templates = Jinja2Templates(directory=templates_path)
 
 objects = [price_shares(), apple_shares(), microsoft_shares(), google_shares(), netflix_shares()]
-graphs = [jsonable_encoder(i.to_json()) for i in objects]
-
+graphs = [
+    dict(
+        id=i[1],
+        figure=i[0].to_json()
+    ) 
+    for i in objects
+]
 
 @app.get('/', response_class=HTMLResponse)
 async def helloworld(request: Request):
-    return templates.TemplateResponse('index.html', {'request': request, 'data': graphs})
+    return templates.TemplateResponse(
+        'index.html', 
+        {'request': request, 'data': json.dumps(graphs)}
+    )
 
 # @app.get('/', response_class=JSONResponse)
 # async def plotly_data():
