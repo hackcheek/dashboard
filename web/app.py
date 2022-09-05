@@ -1,3 +1,4 @@
+from ctypes import Union
 import os
 import plotly.express as px
 
@@ -6,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.encoders import jsonable_encoder
 from starlette.responses import HTMLResponse, JSONResponse
-
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -19,9 +20,12 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 templates = Jinja2Templates(directory=templates_path)
 
+
 data = px.data.stocks()
-fig = px.line(data,['AAPL'])
-response = jsonable_encoder(fig.to_json())
+fig = px.bar(data,['AAPL'])
+response = jsonable_encoder(jsonable_encoder(fig.to_json()))
+
+
 @app.get('/', response_class=HTMLResponse)
 async def helloworld(request: Request):
      return templates.TemplateResponse('index.html', {'request': request,'data':response})

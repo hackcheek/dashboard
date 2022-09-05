@@ -7,11 +7,11 @@
     <link href="{{ url_for('static', path='style.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="content">
-        <div id="data" data="{{data}}"></div>
+    <div class="content" id="content">
+        <div id="data" data="{{data}}" style="display: none;"></div>
     </div>
     <script src="{{ url_for('static', path='js/plotly-2.14.0.min.js') }}"></script>
-    <script src="{{ url_for('static', path='js/script.js') }}"></script>
-    
+    <script src="{{ url_for('static', path='js/plots.js') }}"></script>
+    <script src="{{ url_for('static', path='js/drag.js') }}"></script>
 </body>
 </html>
