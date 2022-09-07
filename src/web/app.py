@@ -1,4 +1,5 @@
 import os
+import plotly.express as px
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -16,16 +17,21 @@ templates_path = os.path.join(web_dir, "templates/")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 templates = Jinja2Templates(directory=templates_path)
 
-graphs = []
-for filename in os.listdir('testing_figures'):
-    with open(f'testing_figures/{filename}') as file: 
-        json = dict(
-            id=filename,
-            figure=file.read()
-        )
-        graphs.append(json)
+
+data = px.data.stocks()
+fig = px.bar(data,['AAPL'])
+response = jsonable_encoder(jsonable_encoder(fig.to_json()))
 
 
 @app.get('/', response_class=HTMLResponse)
 async def helloworld(request: Request):
-     return templates.TemplateResponse('index.html', {'request': request, 'data': graphs})
+     return templates.TemplateResponse('index.html', {'request': request,'data':response})
+
+
+# @app.get('/data', response_class=JSONResponse)
+# async def plotly_data():
+#     fig = px.line(data['AAPL'])
+#     response = jsonable_encoder(fig.to_json())
+#     return JSONResponse(
+#         content=response
+#     )

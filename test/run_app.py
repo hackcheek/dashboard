@@ -1,6 +1,6 @@
 import uvicorn
 
-from web import app
+from src.web import app
 
 
 if __name__ == '__main__':

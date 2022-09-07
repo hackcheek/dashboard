@@ -1,6 +1,6 @@
 import uvicorn
 
-from web.testing_plots import app
+from src.web.testing_figures import app
 
 
 if __name__ == '__main__':

@@ -5,8 +5,7 @@ import json
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.encoders import jsonable_encoder
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import HTMLResponse
 from plotly.graph_objects import Figure
 from typing import Tuple, Literal
 
