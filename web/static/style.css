@@ -8,18 +8,12 @@
   width: 100%;
   height: 100vh;
   background-color: #f2f2f2;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap; }
+  overflow: hidden; }
   .content .box {
     font-size: 8px;
-    position: relative;
-    left: 50px;
-    top: 100px;
-    min-width: 300px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
     height: max-content;
     width: 30%;
     height: max-content;
@@ -27,14 +21,54 @@
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 255, 255, 0.2);
     display: inline-block;
     margin: 10px 20px;
-    background-color: white; }
-    .content .box #move {
+    background-color: white;
+    overflow: hidden; }
+    .content .box .resize-bottom {
       position: absolute;
-      left: -20px;
-      top: 20px;
-      width: 20px;
-      height: 60px;
-      background-color: #293133; }
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: #3895EA;
+      opacity: 0;
+      transition: 0.3s; }
+    .content .box .resize-bottom:hover {
+      cursor: row-resize;
+      opacity: 1; }
+    .content .box .resize-right {
+      position: absolute;
+      right: -1px;
+      top: 0px;
+      width: 4px;
+      height: 100%;
+      background-color: #3895EA;
+      opacity: 0;
+      transition: 0.3s; }
+    .content .box .resize-right:hover {
+      cursor: col-resize;
+      opacity: 1; }
+    .content .box .panel_window {
+      position: absolute;
+      top: 10px;
+      left: 0px;
+      background-color: #293133;
+      color: #f2f2f2;
+      opacity: 0.1; }
+      .content .box .panel_window ul {
+        list-style: none; }
+        .content .box .panel_window ul li button {
+          padding: 5px;
+          font-size: 18px;
+          color: #f2f2f2;
+          background-color: transparent;
+          border: none;
+          transition: 0.3s; }
+        .content .box .panel_window ul li button:hover {
+          cursor: pointer;
+          background: #f2f2f2;
+          color: #293133; }
+    .content .box .panel_window:hover {
+      opacity: 1; }
 
 .svg-container {
   width: 100% !important; }

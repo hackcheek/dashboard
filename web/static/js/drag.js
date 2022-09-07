@@ -1,27 +1,15 @@
-let cajas = document.getElementsByClassName('box');
+let button_move = document.getElementsByClassName('btn-move');
 let statusClick = false;
 let objetoactual;
 let contCLick = 0;
-// function alFondo() {
-//     for(let i=0; i<cajas.length; i++) 
-//     {
-//         // cajas[i].style.zIndex = objetoactual.style.zIndex - 1;
-//         if(cajas[i].style.zIndex !==''){
-//             cajas[i].style.zIndex = objetoactual.style.zIndex - 1;
-//             objetoactual.style.zIndex++;
-//         }else{
-//             cajas[i].style.zIndex = 1;
 
-//         }
-//     }
-// }
 function ratonPulsado(evt) {
     //Obtener la posición de inicio
     contCLick++;
     xInic = evt.clientX;
     yInic = evt.clientY;
     statusClick = true;
-    objetoactual = this;
+    objetoactual = this.parentElement.parentElement.parentElement.parentElement;
     objetoactual.style.zIndex+=1;
   
     console.log(contCLick);
@@ -44,31 +32,19 @@ function ratonMovido(evt) {
 
         elemento.style.top = (position[0] + yInc) + "px";
         elemento.style.left = (position[1] + xInc) + "px";
-        
+        console.log(position);
     }
 }
-// function active() {
-//     let idactive = this.getAttribute('id');
-// }
+
 function ratonSoltado() {
     statusClick = false;
 }
-// function getPosicion(elemento) {
-//     var posicion = new Array(2);
-//     if(document.defaultView && document.defaultView.getComputedStyle) {
-//         posicion[0] = parseInt(document.defaultView.getComputedStyle(elemento, null).getPropertyValue("top"));
-//         posicion[1] = parseInt(document.defaultView.getComputedStyle(elemento, null).getPropertyValue("left"));
-//     } else {
-//         //Para Internet Explorer
-//         posicion[0] = parseInt(elemento.currentStyle.top);             
-//         posicion[1] = parseInt(elemento.currentStyle.left);               
-//     }      
-//     return posicion;
-// }
-for (let i = 0; i < cajas.length; i++) {
-    cajas[i].addEventListener("mouseup", ratonSoltado);
-    cajas[i].addEventListener("mousedown", ratonPulsado);
-
-
+for (let i = 0; i < button_move.length; i++) {
+    button_move[i].addEventListener("mouseup", ratonSoltado);
+    button_move[i].addEventListener("mousedown", ratonPulsado);
+    button_move[i].addEventListener("touchstart", ratonPulsado);
+    button_move[i].addEventListener("touchend", ratonSoltado);
 }
+
 document.addEventListener("mousemove", ratonMovido);
+document.addEventListener("touchmove", ratonMovido);
