@@ -40,6 +40,9 @@ function ratonMovido_resize(evt) {
 
 function ratonSoltado_resize(){
     status_resize = false;
+    let objeto = this.parentElement;
+    console.log(objeto);
+    activeGrapgh(objeto);
 }
 for(let i=0; i<resize_width.length; i++)
 {

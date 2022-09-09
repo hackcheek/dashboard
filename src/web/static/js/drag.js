@@ -1,8 +1,12 @@
 let button_move = document.getElementsByClassName('btn-move');
+let box = document.getElementsByClassName('box');
 let statusClick = false;
 let objetoactual;
 let contCLick = 0;
-
+for(let i = 0; i <box.length; i++) 
+{
+    box[i].style.zIndex = arrayobject.length;
+}
 function ratonPulsado(evt) {
     //Obtener la posición de inicio
     contCLick++;
@@ -10,9 +14,17 @@ function ratonPulsado(evt) {
     yInic = evt.clientY;
     statusClick = true;
     objetoactual = this.parentElement.parentElement.parentElement.parentElement;
-    objetoactual.style.zIndex+=1;
-  
-    console.log(contCLick);
+    
+    if(objetoactual.style.zIndex == arrayobject.length)
+    {
+        for(let i = 0; i < box.length; i++){
+            box[i].style.zIndex = arrayobject.length-1;
+        }
+        objetoactual.style.zIndex = arrayobject.length;
+    }else{
+        objetoactual.style.zIndex++;
+    }
+    
 }
 function ratonMovido(evt) {
     if (statusClick) {
@@ -32,7 +44,7 @@ function ratonMovido(evt) {
 
         elemento.style.top = (position[0] + yInc) + "px";
         elemento.style.left = (position[1] + xInc) + "px";
-        console.log(position);
+        
     }
 }
 
